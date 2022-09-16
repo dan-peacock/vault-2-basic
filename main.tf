@@ -13,6 +13,7 @@ resource "vault_generic_endpoint" "random" {
   path = "sys/tools/random"
   disable_read         = true
   disable_delete       = true
+  write_fields         = ["random_bytes"]
   data_json = <<EOT
 {
   "format": "hex"
@@ -25,11 +26,10 @@ resource "vault_generic_endpoint" "user" {
   depends_on           = [vault_auth_backend.userpass]
   path                 = "auth/userpass/users/${var.username}"
   ignore_absent_fields = true
-
   data_json = <<EOT
 {
   "policies": ["admins", "eaas-client"],
-  "password": "${vault_generic_endpoint.random.write_data_json}"
+  "password": "${vault_generic_endpoint.random.data_json}"
 }
 EOT
 }
@@ -67,7 +67,7 @@ resource "tfe_variable_set" "vault_user_details" {
 
 resource "tfe_variable" "vault_password" {
   key             = "vault_password"
-  value           = vault_generic_endpoint.random.write_data_json
+  value           = vault_generic_endpoint.random.data_json
   sensitive       = false
   category        = "terraform"
   description     = "Vault password"
