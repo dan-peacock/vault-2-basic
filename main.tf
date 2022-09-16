@@ -58,7 +58,7 @@ provider "tfe" {
   token = var.tfc_token
 }
 
-resource "tfe_variable_set" "vault_details" {
+resource "tfe_variable_set" "vault_user_details" {
   name         = "Vault Details"
   description  = "Variable set applied to all workspaces."
   global       = true
