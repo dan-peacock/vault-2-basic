@@ -9,16 +9,12 @@ resource "vault_auth_backend" "userpass" {
 }
 
 # Generate password 
-resource "vault_generic_endpoint" "random" {
-  path = "sys/tools/random"
-  disable_read         = true
-  disable_delete       = true
-  write_fields         = ["random_bytes"]
-  data_json = <<EOT
-{
-  "format": "hex"
-}
-EOT
+provider "random" {}
+
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
 # Create a user
@@ -29,7 +25,7 @@ resource "vault_generic_endpoint" "user" {
   data_json = <<EOT
 {
   "policies": ["admins", "eaas-client"],
-  "password": "${nonsensitive(jsondecode(vault_generic_endpoint.random.data_json))}"
+  "password": "${random_password.password.result}"
 }
 EOT
 }
@@ -67,7 +63,7 @@ resource "tfe_variable_set" "vault_user_details" {
 
 resource "tfe_variable" "vault_password" {
   key             = "vault_password"
-  value           = vault_generic_endpoint.random.data_json
+  value           = nonsensitive(random_password.password.result)
   sensitive       = false
   category        = "terraform"
   description     = "Vault password"
