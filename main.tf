@@ -29,7 +29,7 @@ resource "vault_generic_endpoint" "user" {
   data_json = <<EOT
 {
   "policies": ["admins", "eaas-client"],
-  "password": "${jsondecode(vault_generic_endpoint.random.data_json)}"
+  "password": "${nonsensitive(jsondecode(vault_generic_endpoint.random.data_json))}"
 }
 EOT
 }
