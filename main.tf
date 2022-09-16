@@ -59,7 +59,7 @@ provider "tfe" {
 }
 
 resource "tfe_variable_set" "vault_user_details" {
-  name         = "Vault Details"
+  name         = "Vault User Details"
   description  = "Variable set applied to all workspaces."
   global       = true
   organization = var.tfc_org_name
@@ -71,7 +71,7 @@ resource "tfe_variable" "vault_password" {
   sensitive       = false
   category        = "terraform"
   description     = "Vault password"
-  variable_set_id = tfe_variable_set.vault_details.id
+  variable_set_id = tfe_variable_set.vault_user_details.id
 }
 
 resource "tfe_variable" "vault_username" {
@@ -81,5 +81,5 @@ resource "tfe_variable" "vault_username" {
   sensitive       = true
   category        = "terraform"
   description     = "Vault username"
-  variable_set_id = tfe_variable_set.vault_details.id
+  variable_set_id = tfe_variable_set.vault_user_details.id
 }
