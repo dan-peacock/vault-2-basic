@@ -66,9 +66,8 @@ resource "tfe_variable_set" "vault_details" {
 }
 
 resource "tfe_variable" "vault_password" {
-
   key             = "vault_password"
-  value           = "${vault_generic_endpoint.random.write_data}"
+  value           = vault_generic_endpoint.random.write_data_json
   sensitive       = false
   category        = "terraform"
   description     = "Vault password"
