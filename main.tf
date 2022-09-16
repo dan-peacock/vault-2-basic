@@ -34,13 +34,6 @@ resource "vault_generic_endpoint" "user" {
 EOT
 }
 
-# Configure Secret Engines
-provider "vault" {
-  address = hcp_vault_cluster.vault_cluster.vault_public_endpoint_url
-  token = hcp_vault_cluster_admin_token.vault_admin_token.token
-  
-}
-
 module "vault_aws_secret_backend" {
   source = "./modules/aws"
   count = var.aws_enabled ? 1 : 0
