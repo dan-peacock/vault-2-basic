@@ -24,7 +24,7 @@ resource "vault_generic_endpoint" "user" {
   ignore_absent_fields = true
   data_json = <<EOT
 {
-  "policies": ["admins", "eaas-client"],
+  "policies": ["hcp-root"],
   "password": "${random_password.password.result}"
 }
 EOT

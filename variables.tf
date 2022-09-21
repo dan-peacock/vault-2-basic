@@ -22,4 +22,6 @@ variable "tfc_token" {}
 
 variable "tfc_org_name" {}
 
-variable "username" {}
+variable "username" {
+    default = "user1"
+}
